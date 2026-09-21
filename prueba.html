@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>🌻🌹 Flores Amarillas y Girasoles para Ti 🌻🌹</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fffde4 0%, #ffd6e0 100%);
+      overflow: hidden;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mensaje {
+      position: relative;
+      z-index: 2;
+      background: rgba(255,255,255,0.85);
+      border-radius: 18px;
+      box-shadow: 0 3px 24px 0 #fcd96466;
+      padding: 2.5rem 2rem 2rem 2rem;
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .mensaje h1 {
+      font-size: 2.2rem;
+      color: #fcd964;
+      text-shadow: 1px 1px 6px #fcd96455;
+      margin-bottom: 1rem;
+    }
+    .mensaje p {
+      font-size: 1.2rem;
+      color: #b18904;
+      margin: 0.6rem 0;
+    }
+
+    /* Floating flowers */
+    .flor {
+      position: absolute;
+      top: -100px;
+      width: 64px;
+      height: 64px;
+      pointer-events: none;
+      opacity: 0.9;
+      transition: opacity 1s;
+      will-change: transform;
+    }
+
+    @media (max-width: 600px) {
+      .mensaje {
+        padding: 1.2rem 0.6rem;
+      }
+      .mensaje h1 { font-size: 1.4rem; }
+      .flor { width: 42px; height: 42px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mensaje">
+    <h1>🌻🌹 ¡Feliz día! 🌹🌻</h1>
+    <p>Hoy, mañana, 21 de septiembre o cualquier día:<br>
+    <strong>¡Te deseo un año maravilloso y un día lleno de sonrisas!</strong></p>
+    <p>Que las flores amarillas y los girasoles alegren tu corazón 🌻🌹</p>
+  </div>
+
+  <!-- SVGs de rosas y girasoles (ocultos, se clonan por JS) -->
+  <svg id="rosa-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="display:none">
+    <g>
+      <ellipse cx="32" cy="40" rx="12" ry="18" fill="#c2b600"/>
+      <ellipse cx="32" cy="48" rx="6" ry="9" fill="#6b8e23"/>
+      <circle cx="32" cy="28" r="17" fill="#ffe066" stroke="#c2b600" stroke-width="2"/>
+      <ellipse cx="32" cy="25" rx="8.5" ry="13.5" fill="#fffde4" opacity="0.3"/>
+      <ellipse cx="32" cy="31" rx="10" ry="10" fill="#fff176" opacity="0.7"/>
+      <ellipse cx="32" cy="28" rx="7" ry="11" fill="#fffde4" opacity="0.4"/>
+      <ellipse cx="31" cy="26" rx="3" ry="5.5" fill="#ffe066" opacity="0.6"/>
+    </g>
+  </svg>
+  <svg id="girasol-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="display:none">
+    <g>
+      <ellipse cx="32" cy="50" rx="8" ry="14" fill="#9bc53d"/>
+      <circle cx="32" cy="32" r="14" fill="#ffe066" stroke="#b18904" stroke-width="2"/>
+      <circle cx="32" cy="32" r="7" fill="#a87100"/>
+      <!-- pétalos -->
+      <g>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(0 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(30 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(60 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(90 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(120 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(150 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(180 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(210 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(240 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(270 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(300 32 32)"/>
+        <ellipse cx="32" cy="13" rx="4" ry="14" fill="#ffd700" transform="rotate(330 32 32)"/>
+      </g>
+    </g>
+  </svg>
+
+  <script>
+    // Helper para clonar SVG
+    function getFlowerSVG(type) {
+      let svg;
+      if (type === "rosa") {
+        svg = document.getElementById("rosa-svg").cloneNode(true);
+      } else {
+        svg = document.getElementById("girasol-svg").cloneNode(true);
+      }
+      svg.style.display = '';
+      svg.removeAttribute('id');
+      svg.classList.add('flor');
+      return svg;
+    }
+
+    // Generar flores que caen
+    function crearFlorAnimada() {
+      const tipo = Math.random() < 0.5 ? "rosa" : "girasol";
+      const flor = getFlowerSVG(tipo);
+
+      const size = 38 + Math.random() * 40; // px
+      flor.style.width = size + "px";
+      flor.style.height = size + "px";
+      flor.style.left = (Math.random() * 100) + "vw";
+      flor.style.top = "-80px";
+      flor.style.opacity = 0.95 - Math.random() * 0.3;
+      flor.style.transform = `rotate(${Math.random()*360}deg)`;
+
+      document.body.appendChild(flor);
+
+      // Animación
+      const duracion = 8 + Math.random() * 6; // segundos
+      const desplazamiento = 40 + Math.random() * 40;
+      const giro = Math.random()*180-90;
+
+      flor.animate([
+        { 
+          transform: `translateY(0) rotate(0deg)`, 
+          opacity: flor.style.opacity,
+        },
+        { 
+          transform: `translateY(${window.innerHeight + desplazamiento}px) rotate(${giro}deg)`, 
+          opacity: 0.1 
+        }
+      ], {
+        duration: duracion * 1000,
+        easing: "linear"
+      });
+
+      setTimeout(() => {
+        flor.style.opacity = 0;
+        setTimeout(() => flor.remove(), 1800);
+      }, duracion * 1000);
+    }
+
+    // Lanzar flores cada 500ms aprox
+    setInterval(crearFlorAnimada, 650);
+
+    // Lanzar varias al inicio
+    for(let i=0;i<8;i++) setTimeout(crearFlorAnimada, i*350+Math.random()*300);
+
+  </script>
+</body>
+</html>
